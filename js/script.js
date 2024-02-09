@@ -2,72 +2,87 @@ let a = "",
   b = "",
   sign = "",
   finish = false;
-const numb = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-const oper = ["+", "X", "-", "/"];
-const but = document.querySelectorAll(".calca__button");
-const screen = document.querySelector(".calc__input");
-but.forEach((btn) => {
+const nums = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0"];
+const oper = ["+", "-", "X", "/"];
+const disp = document.querySelector(".calc__input");
+const btns = document.querySelectorAll(".calca__button");
+const clearBtn = document.querySelector(".calc__clear");
+const percBtn = document.querySelector(".calc__perc");
+
+btns.forEach((btn) => {
   btn.addEventListener("click", (event) => {
     const key = event.target.innerHTML;
-    if (numb.includes(key)) {
+    if (nums.includes(key)) {
       if (b === "" && sign === "") {
-        a += key;
-        console.log(a, b, sign);
-        screen.value = a;
-      } else if (a !== "" && b !== "" && finish) {
+        a += btn.innerHTML;
+        disp.value = a;
+      } else if ((b !== "" && a !== "", finish)) {
         b = key;
         finish = false;
-        screen.value = b;
+        disp.value = b;
+        console.log(a, sign, b);
       } else {
-        b += key;
-        screen.value = b;
+        b += btn.innerHTML;
+        disp.value = b;
       }
-      console.log(a, b, sign);
       return;
     }
     if (oper.includes(key)) {
       sign = key;
-      screen.value = sign;
-      console.log(a, b, sign);
+      disp.value = sign;
       return;
     }
+
     if (key === "=") {
-      if (b === "") b = a;
       switch (sign) {
         case "+":
+          if (b === "") {
+            b = a;
+          }
           a = +a + +b;
           break;
         case "-":
           a = a - b;
           break;
-        case "/":
-          if (b === '0'){
-            screen.value = 'Ошибка'
-            a = '';
-            b = '';
-            sign = '';
-            return;
-          }
-        
-          a = a / b;
-          break;
         case "X":
           a = a * b;
           break;
+        case "/":
+          if (b === "0") {
+            disp.value = "Ошибка";
+            console.log(a, b, sign);
+            a = "";
+            b = "";
+            sign = "";
+            return;
+          }
+          a = a / b;
+          break;
       }
+      disp.value = a;
       finish = true;
-      screen.value = a;
+    }
+
+    if (key === "%") {
+      a = a / 100;
+      disp.value = a;
+      finish = true;
+    }
+    if (key === "+/-") {
+      a = -a;
+      disp.value = a;
+      finish = true;
+      console.log(a, b, sign);
     }
   });
-  document.querySelector(".calc__clear").addEventListener("click", () => {
-    clearAll();
-  });
 });
-
-function clearAll() {
+clearBtn.addEventListener("click", () => {
+  clearInput();
+});
+function clearInput() {
+  disp.value = "";
   a = "";
   b = "";
   sign = "";
   finish = false;
-  screen.value = "";
 }
