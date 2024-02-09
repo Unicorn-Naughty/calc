@@ -1,0 +1,135 @@
+Конкатинация - объеденение строк
+/n /' /" - экранирующие символы (перенос на новую строку, ковычка как просто текст)
+const - для безопасности ( по умолчанию)
+let - если переменная будет  меняться
+click keydowns => events
+onclick onkeydown => event listener
+
+
+
+10ex - оптимизировать код
+сделать так что только 1 кнопка может быть активна
+
+1. Сделать клаькулятор
+2. Сделать дневник заметок
+
+Каждый запуск цикла - инетрация
+
+obj arr = links
+
+Узнать как консольложить один раз, а не на каждый элемент массива. при проверке условий
+
+Асинхронный код - не будет ждать пока закончиться строка с кодом перед ним, а сразу придет к выполнению некст кода
+Синхронный код - ждет выполнение 1 и потом только запускает 2
+
+ФУНКЦИЯ ВНУТРИИ ФУНКЦИИ = СТРЕЛОЧНУЮ ИСПОЛЬЗУЕМ
+.forEach((value,index ) => {})
+.map((value, index) => {})
+.filter((value, index) => {})
+
+
+includes() Метод includes() определяет, содержит ли массив определённый элемент, возвращая в зависимости от этого true или false .
+
+Синтаксис
+Конструкция switch имеет один или более блок case и необязательный блок default.
+
+Выглядит она так:
+
+switch(x) {
+  case 'value1':  // if (x === 'value1')
+    ...
+    [break]
+
+  case 'value2':  // if (x === 'value2')
+    ...
+    [break]
+
+  default:
+    ...
+    [break]
+}
+Переменная x проверяется на строгое равенство первому значению value1, затем второму value2 и так далее.
+Если соответствие установлено – switch начинает выполняться от соответствующей директивы case и далее, до ближайшего break (или до конца switch).
+Если ни один case не совпал – выполняется (если есть) вариант default.
+
+
+
+
+
+
+
+
+
+let a = "",
+  b = "",
+  sign = "",
+  finish = false;
+const numb = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
+const oper = ["+", "X", "-", "/"];
+const but = document.querySelectorAll(".calca__button");
+const screen = document.querySelector(".calc__input");
+but.forEach((btn) => {
+  btn.addEventListener("click", (event) => {
+    const key = event.target.innerHTML;
+    if (numb.includes(key)) {
+      if (b === "" && sign === "") {
+        a += key;
+        console.log(a, b, sign);
+        screen.value = a;
+      } else if (a !== "" && b !== "" && finish) {
+        b = key;
+        finish = false;
+        screen.value = b;
+      } else {
+        b += key;
+        screen.value = b;
+      }
+      console.log(a, b, sign);
+      return;
+    }
+    if (oper.includes(key)) {
+      sign = key;
+      screen.value = sign;
+      console.log(a, b, sign);
+      return;
+    }
+    if (key === "=") {
+      if (b === "") b = a;
+      switch (sign) {
+        case "+":
+          a = +a + +b;
+          break;
+        case "-":
+          a = a - b;
+          break;
+        case "/":
+          if (b === '0'){
+            screen.value = 'Ошибка'
+            a = '';
+            b = '';
+            sign = '';
+            return;
+          }
+        
+          a = a / b;
+          break;
+        case "X":
+          a = a * b;
+          break;
+      }
+      finish = true;
+      screen.value = a;
+    }
+  });
+  document.querySelector(".calc__clear").addEventListener("click", () => {
+    clearAll();
+  });
+});
+
+function clearAll() {
+  a = "";
+  b = "";
+  sign = "";
+  finish = false;
+  screen.value = "";
+}
